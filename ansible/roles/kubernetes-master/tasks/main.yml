@@ -1,0 +1,82 @@
+- name: "SELinux setenforce 0"
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: "Copy files related to kubernetes"
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
+  with_items:
+    - { src: 'files/config', dest: '/etc/selinux/config' }
+    - { src: 'files/k8s.conf', dest: '/etc/sysctl.d/k8s.conf' }
+    - { src: 'files/daemon.json', dest: '/etc/docker/daemon.json' }
+    - { src: 'files/ip_vs.conf', dest: '/etc/modules-load.d/ip_vs.conf' }
+    - { src: 'files/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
+    - { src: 'files/kubernetes.repo', dest: '/etc/yum.repos.d/kubernetes.repo' }
+
+- name: "Add kernel modules"
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: "Enable bridge-nf-call-iptables kernel module"
+  command: echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: "Enable Kubernetes Master Ports"
+  firewalld:
+    port: "{{ item.port }}/{{ item.type }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - { port: 2379, type: tcp }
+    - { port: 2380, type: tcp }
+    - { port: 6443, type: tcp }
+    - { port: 10250, type: tcp }
+    - { port: 10251, type: tcp }
+    - { port: 10252, type: tcp }
+  when: "ansible_hostname in 'kubernetes-master'"
+
+- name: "Disable swap"
+  command: swapoff -a
+
+- name: "Disable swap in fstab"
+  command: sed -e '/swap/ s/^#*/#/' -i /etc/fstab
+
+- name: "Reload sysctl"
+  command: sysctl --system
+
+- name: "Reload Firewall Service"
+  service:
+    name: firewalld
+    state: reloaded
+    enabled: yes
+
+- name: "Install Kubernetes"
+  yum:
+    name:
+      - kubectl
+      - kubelet
+      - kubeadm
+      - kubernetes-cni
+    state: latest
+    disable_excludes: repoid
+
+- name: "Reload daemon-reload Service"
+  command: systemctl daemon-reload
+
+- name: "Start Docker Service"
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: "Start Kublet Service"
+  systemd:
+    name: kubelet
+    state: started
+    enabled: yes
+
+- name: "Start firewalld Service"
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes

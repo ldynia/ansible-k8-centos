@@ -1,0 +1,24 @@
+- name: "Install EPEL"
+  yum: pkg=epel-release state=installed
+
+- name: "Upgrade All Packages"
+  yum: pkg=* state=latest
+
+- name: "Install Packages"
+  yum: pkg={{ item }} state=installed
+  with_items:
+    - bash-completion
+    - git
+    - htop
+    - mc
+    - nmap
+    - net-tools
+    - vim
+
+
+- name: "Copy Files"
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
+  with_items:
+    - { src: 'files/hosts', dest: '/etc/hosts' }
+    - { src: 'files/environment', dest: '/etc/environment' }
+    - { src: 'files/.bash_aliases', dest: '/etc/profile.d/00-aliases.sh' }

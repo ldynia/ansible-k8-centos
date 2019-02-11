@@ -1,0 +1,39 @@
+- name: "Install Proxies"
+  yum: pkg={{ item }} state=latest
+  with_items:
+    - haproxy
+    - nginx
+
+- name: "Enable Ports on Firewall"
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    zone: public
+    state: enabled
+  with_items:
+    - http
+    - https
+
+- name: "Set httpd_can_network_connect flag on and keep it persistent across reboots"
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: "Enable Nginx Service and start on boot"
+  service:
+    name: haproxy
+    state: stopped
+    enabled: no
+
+- name: "Enable Nginx Service and start on boot"
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: "Restart Firewall Service"
+  service:
+    name: firewalld
+    state: reloaded
+    enabled: yes

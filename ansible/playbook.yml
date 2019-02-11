@@ -1,0 +1,23 @@
+---
+- hosts: kubernetes-master
+  become: true
+  roles:
+    - kubernetes-master
+    # - proxy
+
+- hosts: kubernetes-worker
+  become: true
+  roles:
+    - kubernetes-worker
+
+# - hosts: master
+#   become: true
+#   roles:
+#     - proxy
+
+
+# - hosts: all
+#   become: true
+#   roles:
+#    # - common
+#    # - docker
