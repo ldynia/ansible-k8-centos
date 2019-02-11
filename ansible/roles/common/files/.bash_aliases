@@ -1,5 +1,4 @@
 alias ..="cd .."
 alias ...="cd ../.."
-alias vb="ssh vagrant@127.0.0.1 -p 2222"
 alias pyc="find $(pwd) -type f -name *.pyc -delete"
-alias git-all="git push origin develop && git checkout master && git merge develop && git push origin master && git checkout develop"
+alias pyo="find $(pwd) -type f -name *.pyo -delete"

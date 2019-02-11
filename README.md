@@ -1,6 +1,6 @@
 This repo contains provisioning for phenex servers operated by Ansible.
 
-### Local set up - development###
+## Local set up - development###
 
 * Install [Ansible](https://www.ansible.com/)
 * Install [VirtualBox](https://www.virtualbox.org/)
@@ -13,23 +13,46 @@ $ vagran ssh master
 
 $ vagran ssh-config master
 Host master
-  IdentityFile /home/ludd/Coding/projects/phenex-provision/vagrant/.vagrant/machines/master/virtualbox/private_key
+  IdentityFile /home/ludd/.vagrant.d/insecure_private_key
 
-$ ssh -i /home/ludd/Coding/projects/phenex-provision/vagrant/.vagrant/machines/master/virtualbox/private_key vagrant@192.168.123.130
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.130
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.131
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.132
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.133
 ```
 
-### Live set up  -production###
+## Live set up  -production###
 
 * Install [Ansible](https://www.ansible.com/)
 * Copy your local ssh key (**id_rsa.pub**) into vagrant servers. You can use `ssh-copy-id`
 
-### Test
+## Test
 Test if services is working by executing this tutorial on vagrant machines [kubernetes by example](http://kubernetesbyexample.com/services/) and running curl from each cluster node
+
+```bash
+$ vagrant up --provision
+$ curl CLUSTER_IP/info
+```
+
+## Vagrant
 
 ```bash
 $ vagrant up --provision
 $ vagrant halt
 $ vagrant destroy
+```
 
-$ curl CLUSTER_IP/info
+## Ansible
+
+```bash
+# CLI
+$ ansible -vvvv -m ping all
+$ ansible -vvvv -m shell -a 'hostname' all
+$ ansible -vvvv -m shell -a 'df -h' all
+$ ansible -vvvv -m shell -a 'whoami' all
+$ ansible -u vagrant -m shell -a 'sudo yum-complete-transaction --cleanup-only' all
+
+# PLAYBOOK
+$ ansible-playbook -K -s -u vagrant playbook.yml  
+$ ansible-playbook --ask-sudo-pass --user=vagrant playbook.yml
 ```
