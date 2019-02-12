@@ -46,11 +46,11 @@ $ vagrant destroy
 
 ```bash
 # CLI
-$ ansible -vvvv -m ping all
-$ ansible -vvvv -m shell -a 'hostname' all
-$ ansible -vvvv -m shell -a 'df -h' all
-$ ansible -vvvv -m shell -a 'whoami' all
-$ ansible -u vagrant -m shell -a 'sudo yum-complete-transaction --cleanup-only' all
+$ ansible -vvvv -m ping all-dev
+$ ansible -vvvv -m shell -a 'hostname' all-dev
+$ ansible -vvvv -m shell -a 'df -h' all-dev
+$ ansible -vvvv -m shell -a 'whoami' all-dev
+$ ansible -u vagrant -m shell -a 'sudo yum-complete-transaction --cleanup-only' all-dev
 
 # PLAYBOOK
 $ ansible-playbook -K -s -u vagrant playbook.yml  

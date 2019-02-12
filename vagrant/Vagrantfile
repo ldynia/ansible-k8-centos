@@ -4,17 +4,19 @@ Vagrant.configure('2') do |config|
   config.ssh.forward_x11 = true
   config.ssh.forward_agent = true
   config.ssh.insert_key = false
-  config.ssh.private_key_path  = 'config/insecure_private_key'
+  config.ssh.private_key_path  = 'config/ssh/insecure_private_key'
 
-  # Config files
+  # Config Files
   config.vm.box = 'centos/7'
 
-  config.vm.provision "file", source: "config/hosts", destination: "config/hosts"
-  config.vm.provision "file", source: "config/resolv.conf", destination: "config/resolv.conf"
-  # config.vm.provision "file", source: "config/k8s.conf", destination: "config/k8s.conf"
-  # config.vm.provision "file", source: "config/kubernetes.repo", destination: "config/kubernetes.repo"
+  # Copy Conf Files
+  config.vm.provision "file", source: "config/etc/hosts", destination: "config/etc/hosts"
+  config.vm.provision "file", source: "config/etc/resolv.conf", destination: "config/etc/resolv.conf"
+  # config.vm.provision "file", source: "config/conf/k8s.conf", destination: "config/conf/k8s.conf"
+  # config.vm.provision "file", source: "config/repo/docker-ce.repo", destination: "config/repo/docker-ce.repo"
+  # config.vm.provision "file", source: "config/repo/kubernetes.repo", destination: "config/repo/kubernetes.repo"
 
-  # Scripts
+  # Copy Scripts Files
   config.vm.provision "file", source: "scripts/files.sh", destination: "scripts/files.sh"
   # config.vm.provision "file", source: "scripts/docker.sh", destination: "scripts/docker.sh"
   # config.vm.provision "file", source: "scripts/kubernetes.sh", destination: "scripts/kubernetes.sh"
@@ -29,9 +31,8 @@ Vagrant.configure('2') do |config|
 
   # Run scripts for all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
-  # config.vm.provision :shell, path: 'scripts/common.sh'
   # config.vm.provision :shell, path: 'scripts/kernel.sh'
-  # config.vm.provision :shell, path: 'scripts/docker.sh'1
+  # config.vm.provision :shell, path: 'scripts/docker.sh'
   # config.vm.provision :shell, path: 'scripts/kubernetes.sh'
 
   config.vm.define 'master' do |master|
