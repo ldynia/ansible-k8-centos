@@ -1,8 +1,10 @@
 ---
-- hosts: all
+- hosts: all-dev
   become: true
+  vars:
+    deployment: "development"
   roles:
-    - common
+    - ./roles/common
     # - docker
 
 # - hosts: kubernetes-master

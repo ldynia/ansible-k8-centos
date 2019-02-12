@@ -45,6 +45,9 @@ $ vagrant destroy
 ## Ansible
 
 ```bash
+$ ansible -m ping all-dev
+$ ansible-playbook playbook.yml --extra-vars "deployment=production"
+
 # CLI
 $ ansible -vvvv -m ping all-dev
 $ ansible -vvvv -m shell -a 'hostname' all-dev

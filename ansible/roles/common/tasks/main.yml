@@ -1,22 +1,29 @@
-- name: "Install EPEL"
+- name: "Enable EPEL Repository"
   yum: pkg=epel-release state=installed
 
-- name: "Upgrade All Packages"
-  yum: pkg=* state=latest
-
 - name: "Install Packages"
-  yum: pkg={{ item }} state=installed
+  yum: pkg={{ item.packages }} state=installed
   with_items:
-    - bash-completion
-    - git
-    - htop
-    - mc
-    - net-tools
-    - nmap
-    - vim
+    - environment: production
+      packages:
+        - bash-completion
+        - git
+        - htop
+        - mc
+        - vim
+    - environment: development
+      packages:
+        - bash-completion
+        - git
+        - htop
+        - mc
+        - net-tools
+        - nmap
+        - vim
+  when: item.environment == deployment
 
 - name: "Copy Files"
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
-    - { src: 'files/hosts', dest: '/etc/hosts' }
+    - { src: 'files/.bashrc', dest: '~/.bashrc' }
     - { src: 'files/.bash_aliases', dest: '/etc/profile.d/00-aliases.sh' }
