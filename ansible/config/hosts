@@ -1,23 +1,23 @@
-[all]
+[all-dev]
 192.168.123.130
 192.168.123.131
 192.168.123.132
 192.168.123.133
 
-[kubernetes-master]
+[kubernetes-master-dev]
 192.168.123.130
 
-[kubernetes-worker]
+[kubernetes-worker-dev]
 192.168.123.131
 192.168.123.132
 192.168.123.133
 
-[master]
+[master-dev]
 192.168.123.130
 
-[web]
+[web-dev]
 192.168.123.131
 
-[compute]
+[compute-dev]
 192.168.123.132
 192.168.123.133
