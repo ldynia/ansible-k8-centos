@@ -18,13 +18,17 @@
     - lvm2
 
 - name: "Install Docker"
-  yum: pkg=docker-ce state=latest
+  yum: pkg={{ item }} state=installed
+  with_items:
+    - containerd.io
+    - docker-ce-18.09.2-3.el7
 
 - name: "Add User vagrant To docker Group"
   user:
     name: vagrant
     groups: docker
     append: yes
+  when: deployment == "development"
 
 - name: "Install Docker Composer"
   get_url:
@@ -40,23 +44,33 @@
     force: yes
     mode: 0755
 
-- name: "Enable Docker Ports"
+- name: "Enable Ports for Docker and Docker Swarm"
   firewalld:
     port: "{{ item.port }}/{{ item.type }}"
     permanent: true
     state: enabled
   with_items:
+    # Docker TLS link: https://docs.docker.com/engine/security/https/#secure-by-default
     - { port: 2376, type: tcp }
     - { port: 2377, type: tcp }
+    # Swarm ports link: https://docs.docker.com/engine/swarm/ingress/
     - { port: 7946, type: tcp }
     - { port: 7946, type: udp }
     - { port: 4789, type: udp }
+  when: deployment == "development"
 
 - name: "Restart Firewall Service"
   service:
     name: firewalld
     state: reloaded
     enabled: yes
+  when: deployment == "development"
+
+- name: Enable docker service and ensure it is not masked
+  systemd:
+    name: docker
+    enabled: yes
+    masked: no
 
 - name: "Start Docker Service"
   service:

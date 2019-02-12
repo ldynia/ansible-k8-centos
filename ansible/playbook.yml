@@ -4,8 +4,8 @@
   vars:
     deployment: "development"
   roles:
-    - ./roles/common
-    # - docker
+    - common
+    - docker
 
 # - hosts: kubernetes-master
 #   become: true
