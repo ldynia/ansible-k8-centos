@@ -1,16 +1,24 @@
-- name: "Add Docker Repo"
+- name: "Create docker directory"
+  file: path=/etc/docker state=directory mode=0700
+
+- name: "Copy files"
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
+  with_items:
+    - { src: 'files/etc/docker/daemon.json', dest: '/etc/docker/daemon.json' }
+
+- name: "Add Repo"
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
     dest: /etc/yum.repos.d/docer-ce.repo
 
-- name: "Enable Docker Edge Repo"
+- name: "Enable Edge Repo"
   ini_file:
     dest: /etc/yum.repos.d/docer-ce.repo
     section: 'docker-ce-edge'
     option: enabled
     value: 0
 
-- name: "Install Docker Dependencies"
+- name: "Install Dependencies"
   yum:
     name:
       - lvm2
@@ -41,21 +49,21 @@
     append: yes
   when: deployment == "development"
 
-- name: "Install Docker Composer"
+- name: "Install Composer"
   get_url:
     url: https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
     force: yes
     mode: 0755
 
-- name: "Install Docker Auto-complete"
+- name: "Install Auto-complete"
   get_url:
     url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker
     dest: /etc/bash_completion.d/docker.sh
     force: yes
     mode: 0755
 
-- name: "Enable Ports for Docker and Docker Swarm"
+- name: "Enable Ports for and Docker Swarm"
   firewalld:
     port: "{{ item.port }}/{{ item.type }}"
     permanent: true
