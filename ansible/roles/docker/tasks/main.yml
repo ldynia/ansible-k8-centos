@@ -63,7 +63,7 @@
     force: yes
     mode: 0755
 
-- name: "Enable Ports for and Docker Swarm"
+- name: "Enable Docker Ports for and Docker Swarm"
   firewalld:
     port: "{{ item.port }}/{{ item.type }}"
     permanent: true

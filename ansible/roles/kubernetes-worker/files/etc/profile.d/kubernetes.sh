@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
-if [ -f ~/.bashrc ]; then
-    source ~/.bashrc;
+if [ -f /usr/bin/kubectl ]; then
+  source <(kubectl completion bash)
+fi
+
+if [ -f /usr/bin/kubeadm ]; then
+  source <(kubeadm completion bash)
 fi

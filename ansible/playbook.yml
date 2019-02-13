@@ -1,18 +1,18 @@
 ---
-- hosts: all-dev
-  vars:
-    deployment: "development"
-  become: true
-  roles:
-    - common
-    - docker
+# - hosts: all-dev
+#   vars:
+#     deployment: "development"
+#   become: true
+#   roles:
+#     - common
+#     - docker
 
-- hosts: kubernetes-master-dev
-  vars:
-    deployment: "development"
-  become: true
-  roles:
-    - kubernetes-master
+# - hosts: kubernetes-master-dev
+#   vars:
+#     deployment: "development"
+#   become: true
+#   roles:
+#     - kubernetes-master
 
 - hosts: kubernetes-worker-dev
   vars:
