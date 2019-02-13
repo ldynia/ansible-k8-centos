@@ -21,8 +21,9 @@
 # - name: "Remove docker"
 #   yum:
 #     name:
-#       - docker-ce.x86_64
-#       - docker-ce-cli.x86_64
+#       - docker-ce
+#       - docker-ce-cli
+#       - containerd.io
 #     state: removed
 
 - name: "Install Docker"
