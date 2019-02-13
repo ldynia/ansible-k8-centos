@@ -2,7 +2,7 @@
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
     - { src: 'files/etc/selinux/config', dest: '/etc/selinux/config' }
-    - { src: 'files/etc/profile.d/bashrc.sh', dest: '/etc/profile.d/bashrc.sh' }
+    - { src: 'files/etc/profile.d/kubernetes.sh', dest: '/etc/profile.d/01-kubernetes.sh' }
     - { src: 'files/etc/modules-load.d/ip_vs.conf', dest: '/etc/modules-load.d/ip_vs.conf' }
     - { src: 'files/etc/modules-load.d/br_netfilter.conf', dest: '/etc/modules-load.d/br_netfilter.conf' }
     - { src: 'files/etc/sysctl.d/k8s.conf', dest: '/etc/sysctl.d/k8s.conf' }
@@ -24,14 +24,14 @@
     policy: targeted
     state: permissive
 
-  - name: "Add kernel modules"
-    modprobe:
-      name: "{{ item }}"
-      state: present
-    with_items:
-      - ip_vs_sh
-      - ip_vs_wrr
-      - br_netfilter
+- name: "Load kernel modules"
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ip_vs_sh
+    - ip_vs_wrr
+    - br_netfilter
 
 - name: "Enable bridge-nf-call-iptables kernel module"
   command: echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables

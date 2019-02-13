@@ -14,7 +14,7 @@
   roles:
     - kubernetes-master
 
-# - hosts: kubernetes-worker
-#   become: true
-#   roles:
-#     - kubernetes-worker
+- hosts: kubernetes-worker
+  become: true
+  roles:
+    - kubernetes-worker
