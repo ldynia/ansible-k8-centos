@@ -1,3 +1,6 @@
+- name: "Create kubelet.service.d directory"
+  file: path=/etc/systemd/system/kubelet.service.d/ state=directory owner=root group=root mode=0755
+
 - name: "Copy files related to kubernetes"
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
@@ -7,8 +10,7 @@
     - { src: 'files/etc/modules-load.d/br_netfilter.conf', dest: '/etc/modules-load.d/br_netfilter.conf' }
     - { src: 'files/etc/sysctl.d/k8s.conf', dest: '/etc/sysctl.d/k8s.conf' }
     - { src: 'files/etc/yum.repos.d/kubernetes.repo', dest: '/etc/yum.repos.d/kubernetes.repo' }
-    # - { src: 'files/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
-
+    - { src: 'files/etc/systemd/system/kubelet.service.d/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
 
 - name: "Disable swap"
   command: swapoff -a
@@ -36,6 +38,16 @@
 - name: "Enable bridge-nf-call-iptables kernel module"
   command: echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
+- name: "Install Kubernetes"
+  yum:
+    name:
+      - kubectl-{{kubernetes_version}}
+      - kubelet-{{kubernetes_version}}
+      - kubeadm-{{kubernetes_version}}
+      # - ipvsadm
+    state: installed
+    disable_excludes: main
+
 - name: "Enable Kubernetes Worker Ports"
   firewalld:
     port: "{{ item.port }}/{{ item.type }}"
@@ -44,36 +56,31 @@
   with_items:
     - { port: 10250, type: tcp }
 
-- name: "Reload sysctl"
-  command: sysctl --system
-
 - name: "Restart Firewall Service"
   service:
     name: firewalld
     state: reloaded
     enabled: yes
 
-- name: "Install Kubernetes"
-  yum:
-    name:
-      - kubectl-1.13.3-0
-      - kubelet-1.13.3-0
-      - kubeadm-1.13.3-0
-      - ipvsadm
-    state: latests
-    disable_excludes: main
+- name: "Reload sysctl"
+  command: sysctl --system
 
 - name: "Reload daemon-reload Service"
   command: systemctl daemon-reload
 
+- name: "Reload Docker Service"
+  systemd:
+    name: docker
+    state: started
+    # state: reloaded
+    enabled: yes
+
 - name: "Restart Kublet Service"
   systemd:
     name: kubelet
-    state: restarted
+    state: started
+    # state: restarted
     enabled: yes
 
-- name: "Restart Docker Service"
-  systemd:
-    name: docker
-    state: restarted
-    enabled: yes
+- name: "Joint Master node"
+  shell: kubeadm join {{ master_ip }}:6443 --token {{ kubernetes_token }} --discovery-token-unsafe-skip-ca-verification

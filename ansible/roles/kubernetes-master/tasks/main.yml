@@ -1,3 +1,6 @@
+- name: "Create kubelet.service.d directory"
+  file: path=/etc/systemd/system/kubelet.service.d/ state=directory mode=0755
+
 - name: "Copy files"
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
@@ -6,7 +9,7 @@
     - { src: 'files/etc/profile.d/kubernetes.sh', dest: '/etc/profile.d/01-kubernetes.sh' }
     - { src: 'files/etc/modules-load.d/ip_vs.conf', dest: '/etc/modules-load.d/ip_vs.conf' }
     - { src: 'files/etc/yum.repos.d/kubernetes.repo', dest: '/etc/yum.repos.d/kubernetes.repo' }
-    # - { src: 'files/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
+    - { src: 'files/etc/systemd/system/kubelet.service.d/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
 
 - name: "Disable swap"
   command: swapoff -a
@@ -47,14 +50,14 @@
     - { port: 10251, type: tcp }
     - { port: 10252, type: tcp }
 
-- name: "Reload sysctl"
-  command: sysctl --system
-
 - name: "Reload Firewall Service"
   service:
     name: firewalld
     state: reloaded
     enabled: yes
+
+- name: "Reload sysctl"
+  command: sysctl --system
 
 # - name: "Remove Kubernetes"
 #   yum:
@@ -69,42 +72,12 @@
 - name: "Install Kubernetes"
   yum:
     name:
-      - kubectl-1.13.3-0
-      - kubelet-1.13.3-0
-      - kubeadm-1.13.3-0
-      - kubernetes-cni-0.6.0-0
-    state: latest
+      - kubectl-{{ kubernetes_version }}
+      - kubelet-{{ kubernetes_version }}
+      - kubeadm-{{ kubernetes_version }}
+      - kubernetes-cni-{{ kubernetes_cni_version }}
+    state: installed
     disable_excludes: main
-
-- name: "Add auto-complete on kubectl for root"
-  lineinfile:
-    state: present
-    path: /root/.bashrc
-    regexp: 'kubectl completion bash'
-    line: 'source <(kubectl completion bash)'
-
-- name: "Add auto-complete on kubeadm and for root"
-  lineinfile:
-    state: present
-    path: /root/.bashrc
-    regexp: 'kubeadm completion bash'
-    line: 'source <(kubeadm completion bash)'
-
-- name: "Add auto-complete on kubectl for vagrant"
-  lineinfile:
-    state: present
-    path: /home/vagrant/.bashrc
-    regexp: 'kubectl completion bash'
-    line: 'source <(kubectl completion bash)'
-  when: deployment == "development"
-
-- name: "Add auto-complete on kubeadm and for vagrant"
-  lineinfile:
-    state: present
-    path: /home/vagrant/.bashrc
-    regexp: 'kubeadm completion bash'
-    line: 'source <(kubeadm completion bash)'
-  when: deployment == "development"
 
 - name: "Reload daemon-reload Service"
   command: systemctl daemon-reload
@@ -114,6 +87,29 @@
     name: docker
     state: started
     enabled: yes
+
+- name: "Initialize server with - kubeadm init"
+  shell: kubeadm init --apiserver-advertise-address=$(hostname -i) \
+                      --token={{ kubernetes_token }} \
+                      --pod-network-cidr={{ kubernetes_pod_network_cidr }}
+
+- name: "Create /root/.kube directory"
+  file: path=/root/.kube state=directory owner=root group=root mode=0755
+
+- name: "Create /home/vagrant/.kube directory"
+  file: path=/home/vagrant/.kube state=directory owner=vagrant group=vagrant mode=0755
+  when: deployment == "development"
+
+- name: "Copy /etc/kubernetes/admin.conf to /root/.kube/config"
+  copy: src='/etc/kubernetes/admin.conf' dest='/root/.kube/config' owner=root group=root mode=0640 remote_src=yes
+
+- name: "Copy /etc/kubernetes/admin.conf to /home/vagrant/.kube/config"
+  copy: src='/etc/kubernetes/admin.conf' dest='/home/vagrant/.kube/config' owner=vagrant group=vagrant mode=0640 remote_src=yes
+  when: deployment == "development"
+
+- name: "Apply CNI Wave Net plugin"
+  shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+  when: kubernetes_network_cni == "wavenet"
 
 - name: "Start Kublet Service"
   systemd:
