@@ -1,9 +1,9 @@
 ---
-# - hosts: all-dev
-#   become: true
-#   roles:
-#     - common
-#     - docker
+- hosts: all-dev
+  become: true
+  roles:
+    - common
+    - docker
 
 - hosts: kubernetes-master-dev
   become: true
