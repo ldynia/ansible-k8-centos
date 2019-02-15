@@ -88,10 +88,16 @@
     state: started
     enabled: yes
 
+- name: "Obtain state of kublet service"
+  command: systemctl status kubelet.service
+  register: kubelet_status
+  failed_when: kubelet_status.rc > 3
+
 - name: "Initialize server with - kubeadm init"
   shell: kubeadm init --apiserver-advertise-address=$(hostname -i) \
                       --token={{ kubernetes_token }} \
                       --pod-network-cidr={{ kubernetes_pod_network_cidr }}
+  when: "'running' not in kubelet_status.stdout"
 
 - name: "Create /root/.kube directory"
   file: path=/root/.kube state=directory owner=root group=root mode=0755
