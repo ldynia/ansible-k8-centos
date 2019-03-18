@@ -1,6 +1,6 @@
 This repo contains provisioning for phenex servers operated by Ansible.
 
-## Local set up - development###
+## Development - Local Set Up
 
 * Install [Ansible](https://www.ansible.com/)
 * Install [VirtualBox](https://www.virtualbox.org/)
@@ -8,9 +8,19 @@ This repo contains provisioning for phenex servers operated by Ansible.
 * Copy your local ssh key (**id_rsa.pub**) into vagrant servers
 * Request sudo privileges on vagran machines
 
-```bash
-$ vagran ssh master
+## Production - Live Set Up
 
+* Install [Ansible](https://www.ansible.com/)
+* Copy your local ssh key (**id_rsa.pub**) into vagrant servers. You can use `ssh-copy-id`
+
+## Vagrant
+
+```bash
+$ vagrant up
+$ vagrant status
+$ vagrant ssh-config
+
+$ vagran ssh master
 $ vagran ssh-config master
 Host master
   IdentityFile /home/ludd/.vagrant.d/insecure_private_key
@@ -19,25 +29,7 @@ $ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.130
 $ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.131
 $ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.132
 $ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.123.133
-```
 
-## Live set up  -production###
-
-* Install [Ansible](https://www.ansible.com/)
-* Copy your local ssh key (**id_rsa.pub**) into vagrant servers. You can use `ssh-copy-id`
-
-## Test
-Test if services is working by executing this tutorial on vagrant machines [kubernetes by example](http://kubernetesbyexample.com/services/) and running curl from each cluster node
-
-```bash
-$ vagrant up --provision
-$ curl CLUSTER_IP/info
-```
-
-## Vagrant
-
-```bash
-$ vagrant up --provision
 $ vagrant halt
 $ vagrant destroy
 ```
@@ -58,4 +50,19 @@ $ ansible -u vagrant -m shell -a 'sudo yum-complete-transaction --cleanup-only' 
 # PLAYBOOK
 $ ansible-playbook -K -s -u vagrant playbook.yml  
 $ ansible-playbook --ask-sudo-pass --user=vagrant playbook.yml
+```
+
+
+## Verify - Kubernetes Cluster
+Test if services is working by executing this tutorial on vagrant machines [kubernetes by example](http://kubernetesbyexample.com/services/) and running curl from each cluster node
+
+```bash
+$ kubectl cluster-info
+$ kubectl get nodes
+$ kubectl get componentstatuses
+```
+
+```bash
+$ vagrant up --provision
+$ curl CLUSTER_IP/info
 ```
