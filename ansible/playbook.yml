@@ -9,6 +9,8 @@
   become: true
   roles:
     - kubernetes-master
+    - kubernetes-helm
+    - kubernetes-traefik
 
 - hosts: kubernetes-worker-dev
   become: true
