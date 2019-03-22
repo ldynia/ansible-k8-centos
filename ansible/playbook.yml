@@ -5,6 +5,16 @@
     - common
     - docker
 
+- hosts: master-dev
+  become: true
+  roles:
+    - nfs-master
+
+- hosts: slave-dev
+  become: true
+  roles:
+    - nfs-slave
+
 - hosts: kubernetes-master-dev
   become: true
   roles:

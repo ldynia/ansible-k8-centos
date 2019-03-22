@@ -1,0 +1,24 @@
+- name: Create /nfs/data directory
+  file:
+    path: /mnt/nfs/data
+    owner: vagrant
+    group: vagrant
+    state: directory
+
+- name: Add nfs mount to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^master:/nfs/data'
+    line: 'master:/nfs/data /mnt/nfs/data nfs defaults,vers=3,intr  0 0'
+
+- name: Enable and start 'rpcbind' service
+  systemd:
+    name: rpcbind
+    state: started
+    enabled: yes
+
+- name: Enable and start 'firewalld' service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes

@@ -1,0 +1,40 @@
+- name: Copy config files
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
+  with_items:
+    - { src: 'files/etc/exports', dest: '/etc/exports' }
+
+- name: Create /nfs/data directory
+  file:
+    owner: vagrant
+    group: vagrant
+    path: /nfs/data
+    state: directory
+
+- name: Enable and start 'rpcbind' service
+  systemd:
+    name: rpcbind
+    state: started
+    enabled: yes
+
+- name: Enable and start 'nfs-server' service
+  systemd:
+    name: nfs-server
+    state: started
+    enabled: yes
+
+- name: Enable and start 'firewalld' service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable nfs service on Firewall
+  firewalld:
+    service: nfs
+    permanent: yes
+    state: enabled
+
+- name: Reload 'firewalld' service
+  systemd:
+    name: firewalld
+    state: reloaded
