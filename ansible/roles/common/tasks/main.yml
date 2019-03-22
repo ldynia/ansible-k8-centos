@@ -1,11 +1,11 @@
-- name: "Copy Files"
+- name: Copy config files
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
     - { src: 'files/.bashrc', dest: '~/.bashrc' }
     - { src: 'files/etc/yum.conf', dest: '/etc/yum.conf' }
     - { src: 'files/.bash_aliases', dest: '/etc/profile.d/00-aliases.sh' }
 
-- name: "Enable EPEL Repository"
+- name: Enable EPEL Repository
   yum: pkg=epel-release state=installed
 
 - name: Upgrade all packages, beside excluded ones
@@ -14,7 +14,7 @@
     state: latest
     exclude: kernel*, docker*, kubernetes*
 
-- name: "Install Packages"
+- name: Install Packages
   yum: pkg={{ item.packages }} state=installed
   with_items:
     - environment: production

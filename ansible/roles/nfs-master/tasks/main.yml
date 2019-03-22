@@ -10,17 +10,14 @@
     path: /nfs/data
     state: directory
 
-- name: Enable and start 'rpcbind' service
+- name: Enable and start nfs related service
   systemd:
-    name: rpcbind
+    name: "{{ item }}"
     state: started
     enabled: yes
-
-- name: Enable and start 'nfs-server' service
-  systemd:
-    name: nfs-server
-    state: started
-    enabled: yes
+  with_items:
+    - rpcbind
+    - nfs-server
 
 - name: Enable and start 'firewalld' service
   systemd:
@@ -30,9 +27,14 @@
 
 - name: Enable nfs service on Firewall
   firewalld:
-    service: nfs
+    service: "{{ item }}"
     permanent: yes
     state: enabled
+  with_items:
+    - nfs
+    - nfs3
+    - mountd
+    - rpc-bind
 
 - name: Reload 'firewalld' service
   systemd:

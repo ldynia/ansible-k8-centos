@@ -85,6 +85,6 @@
   register: kubelet_status
   failed_when: kubelet_status.rc > 3
 
-- name: "Joint Master node"
+- name: "Join Master node"
   shell: kubeadm join {{ master_ip }}:6443 --token {{ kubernetes_token }} --discovery-token-unsafe-skip-ca-verification
   when: "'running' not in kubelet_status.stdout"

@@ -5,12 +5,6 @@
     group: vagrant
     state: directory
 
-- name: Add nfs mount to /etc/fstab
-  lineinfile:
-    path: /etc/fstab
-    regexp: '^master:/nfs/data'
-    line: 'master:/nfs/data /mnt/nfs/data nfs defaults,vers=3,intr  0 0'
-
 - name: Enable and start 'rpcbind' service
   systemd:
     name: rpcbind
@@ -22,3 +16,11 @@
     name: firewalld
     state: started
     enabled: yes
+
+- name: Mount nfs directories
+  mount:
+    name: /mnt/nfs/data
+    opts: defaults,vers=3,intr
+    fstype: nfs
+    src: master:/nfs/data
+    state: mounted
