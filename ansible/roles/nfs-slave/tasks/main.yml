@@ -1,6 +1,8 @@
-- name: Create /nfs/data directory
+- name: Create nfs directories
   file:
-    path: /mnt/nfs/data
+    path:
+      - /mnt/nfs/www
+      - /mnt/nfs/data
     owner: vagrant
     group: vagrant
     state: directory
@@ -17,7 +19,15 @@
     state: started
     enabled: yes
 
-- name: Mount nfs directories
+- name: Mount nfs www directories
+  mount:
+    name: /mnt/nfs/www
+    opts: defaults,vers=3,intr
+    fstype: nfs
+    src: master:/nfs/www
+    state: mounted
+
+- name: Mount nfs data directories
   mount:
     name: /mnt/nfs/data
     opts: defaults,vers=3,intr

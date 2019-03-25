@@ -3,12 +3,15 @@
   with_items:
     - { src: 'files/etc/exports', dest: '/etc/exports' }
 
-- name: Create /nfs/data directory
+- name: Create nfs directories
   file:
     owner: vagrant
     group: vagrant
-    path: /nfs/data
+    path: "{{ item }}"
     state: directory
+  with_items:
+    - /nfs/www
+    - /nfs/data
 
 - name: Enable and start nfs related service
   systemd:
