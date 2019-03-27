@@ -24,6 +24,7 @@
         - htop
         - mc
         - nfs-utils
+        - tig
         - vim
     - environment: development
       packages:
@@ -34,5 +35,6 @@
         - net-tools
         - nfs-utils
         - nmap
+        - tig
         - vim
   when: item.environment == deployment

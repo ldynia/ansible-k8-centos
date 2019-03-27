@@ -44,6 +44,7 @@
       - kubectl-{{kubernetes_version}}
       - kubelet-{{kubernetes_version}}
       - kubeadm-{{kubernetes_version}}
+      - kubernetes-cni-{{ kubernetes_cni_version }}
       # - ipvsadm
     state: installed
     disable_excludes: main
