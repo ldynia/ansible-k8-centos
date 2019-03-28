@@ -1,2 +1,3 @@
 # ignore below dirs
 vagrant/.vagrant/
+asnible/playbook.retry

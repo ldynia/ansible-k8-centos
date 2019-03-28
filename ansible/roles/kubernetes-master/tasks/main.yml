@@ -46,6 +46,9 @@
     - { port: 2379, type: tcp }
     - { port: 2380, type: tcp }
     - { port: 6443, type: tcp }
+    - { port: 6783, type: tcp }
+    - { port: 6783, type: udp }
+    - { port: 6784, type: udp }
     - { port: 10250, type: tcp }
     - { port: 10251, type: tcp }
     - { port: 10252, type: tcp }
