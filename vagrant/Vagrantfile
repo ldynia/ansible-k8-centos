@@ -12,68 +12,57 @@ Vagrant.configure('2') do |config|
   # Copy Conf Files
   config.vm.provision "file", source: "config/etc/hosts", destination: "config/etc/hosts"
   config.vm.provision "file", source: "config/etc/resolv.conf", destination: "config/etc/resolv.conf"
-  # config.vm.provision "file", source: "config/conf/k8s.conf", destination: "config/conf/k8s.conf"
-  # config.vm.provision "file", source: "config/repo/kubernetes.repo", destination: "config/repo/kubernetes.repo"
 
   # Copy Scripts Files
   config.vm.provision "file", source: "scripts/files.sh", destination: "scripts/files.sh"
-  # config.vm.provision "file", source: "scripts/kubernetes.sh", destination: "scripts/kubernetes.sh"
-  # config.vm.provision "file", source: "scripts/kubernetes-master.sh", destination: "scripts/kubernetes-master.sh"
-  # config.vm.provision "file", source: "scripts/kubernetes-minion.sh", destination: "scripts/kubernetes-minion.sh"
 
   # Add host network manager
-  # config.vm.network "private_network", type: "dhcp", ip: "192.168.123.13
+  # config.vm.network "private_network", type: "dhcp", ip: "192.168.234.130
   config.vm.provider 'virtualbox' do |vb|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 
   # Run scripts for all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
-  # config.vm.provision :shell, path: 'scripts/kernel.sh'
-  # config.vm.provision :shell, path: 'scripts/kubernetes.sh'
 
   config.vm.define 'master' do |master|
     master.vm.provider 'virtualbox' do |vm|
       vm.cpus = 2
       vm.memory = 2048
-      vm.name = 'phenx_master'
+      vm.name = 'master'
     end
     master.vm.hostname = 'master'
-    master.vm.network "private_network", ip: '192.168.123.130'
-    # master.vm.provision :shell, path: 'scripts/kubernetes-master.sh'
+    master.vm.network "private_network", ip: '192.168.234.130'
   end
 
   config.vm.define 'web01' do |minion|
     minion.vm.provider 'virtualbox' do |vm|
       vm.cpus = 2
       vm.memory = 1024
-      vm.name = 'phenx_web01'
+      vm.name = 'web01'
     end
     minion.vm.hostname = 'web01'
-    minion.vm.network "private_network", ip: '192.168.123.131'
-    # minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+    minion.vm.network "private_network", ip: '192.168.234.131'
   end
 
   config.vm.define 'compute01' do |minion|
     minion.vm.provider 'virtualbox' do |vm|
       vm.cpus = 2
       vm.memory = 1024
-      vm.name = 'phenx_compute01'
+      vm.name = 'compute01'
     end
     minion.vm.hostname = 'compute01'
-    minion.vm.network "private_network", ip: '192.168.123.132'
-    # minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+    minion.vm.network "private_network", ip: '192.168.234.132'
   end
 
   # config.vm.define 'compute02' do |minion|
   #   minion.vm.provider 'virtualbox' do |vm|
   #     vm.cpus = 2
   #     vm.memory = 1024
-  #     vm.name = 'phenx_compute02'
+  #     vm.name = 'compute02'
   #   end
   #   minion.vm.hostname = 'compute02'
-  #   minion.vm.network "private_network", ip: '192.168.123.133'
-  #   # minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+  #   minion.vm.network "private_network", ip: '192.168.234.133'
   # end
 
 end

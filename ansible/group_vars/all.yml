@@ -2,7 +2,7 @@
 
 # global
 deployment: development
-master_ip: 192.168.123.130
+master_ip: 192.168.234.130
 
 # docker
 docker_version: 18.09.4-3.el7

@@ -10,7 +10,7 @@ ff02::3	ip6-allhosts
 127.0.0.1 localhost
 
 # Cluster nodes
-192.168.123.130 master
-192.168.123.131 web01
-192.168.123.132 compute01
-192.168.123.133 compute02
+192.168.234.130 master
+192.168.234.131 web01
+192.168.234.132 compute01
+192.168.234.133 compute02
