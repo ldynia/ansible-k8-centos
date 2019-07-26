@@ -23,10 +23,10 @@ $ vagrant ssh-config master
 Host master
   IdentityFile /home/ludd/.vagrant.d/insecure_private_key
 
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.130
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.131
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.132
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.133
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.230
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.231
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.232
+$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.233
 
 $ vagrant ssh master
 $ vagrant halt

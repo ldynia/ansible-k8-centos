@@ -1,3 +1,4 @@
+
 # The following lines are desirable for IPv6 capable hosts
 ::1	ip6-localhost	ip6-loopback
 fe00::0	ip6-localnet
@@ -10,7 +11,7 @@ ff02::3	ip6-allhosts
 127.0.0.1 localhost
 
 # Cluster nodes
-192.168.234.130 master
-192.168.234.131 web01
-192.168.234.132 compute01
-192.168.234.133 compute02
+192.168.234.230 master
+192.168.234.231 web01
+192.168.234.232 compute01
+192.168.234.233 compute02
