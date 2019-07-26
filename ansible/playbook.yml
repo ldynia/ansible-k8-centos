@@ -1,28 +1,28 @@
 ---
-- hosts: all-dev
+- hosts: all
   become: true
   roles:
     - common
     - docker
 
-- hosts: master-dev
+- hosts: master
   become: true
   roles:
     - nfs-master
 
-- hosts: slave-dev
+- hosts: slave
   become: true
   roles:
     - nfs-slave
 
-- hosts: kubernetes-master-dev
+- hosts: kubernetes-master
   become: true
   roles:
     - kubernetes-master
     - kubernetes-helm
     - kubernetes-traefik
 
-- hosts: kubernetes-worker-dev
+- hosts: kubernetes-worker
   become: true
   roles:
     - kubernetes-worker

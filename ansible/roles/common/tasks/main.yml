@@ -38,5 +38,6 @@
         - nfs-utils
         - nmap
         - tig
+        - tree
         - vim
   when: item.environment == deployment
