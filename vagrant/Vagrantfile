@@ -12,8 +12,9 @@ Vagrant.configure('2') do |config|
   config.vm.provision "file", source: "scripts/files.sh", destination: "scripts/files.sh"
   config.vm.provision :shell, path: 'scripts/files.sh'
 
+  # https://blog.centos.org/2019/07/updated-centos-vagrant-images-available-v1905-01/
   config.vm.provider 'virtualbox' do |vb|
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
   end
 
 
