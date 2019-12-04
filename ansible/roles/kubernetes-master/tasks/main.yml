@@ -1,6 +1,9 @@
 - name: "Create kubelet.service.d directory"
   file: path=/etc/systemd/system/kubelet.service.d/ state=directory mode=0755
 
+- name: "Create custom directory in /etc/kubernetes"
+  file: path=/etc/kubernetes/custom/ state=directory mode=0755
+
 - name: "Copy files"
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
@@ -10,6 +13,7 @@
     - { src: 'files/etc/modules-load.d/ip_vs.conf', dest: '/etc/modules-load.d/ip_vs.conf' }
     - { src: 'files/etc/yum.repos.d/kubernetes.repo', dest: '/etc/yum.repos.d/kubernetes.repo' }
     - { src: 'files/etc/systemd/system/kubelet.service.d/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
+    - { src: 'files/var/lib/kubelet/config.yaml', dest: '/etc/kubernetes/custom/kubelet.config.yaml' }
 
 - name: "Disable swap"
   command: swapoff -a
@@ -120,7 +124,7 @@
   shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
   when: kubernetes_network_cni == "wavenet"
 
-- name: "Start Kublet Service"
+- name: "Start Kubelet Service"
   systemd:
     name: kubelet
     state: started

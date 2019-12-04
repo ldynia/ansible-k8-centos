@@ -5,8 +5,8 @@ deployment: development
 master_ip: 192.168.234.230
 
 # docker
-docker_version: 18.09.4-3.el7
-containerd_version: 1.2.2-3.3.el7
+docker_version: 19.03.5-3.el7
+containerd_version: 1.2.10-3.2.el7
 
 # kubernetes
 kubernetes_version: 1.15.0-0

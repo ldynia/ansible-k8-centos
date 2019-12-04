@@ -1,6 +1,9 @@
 - name: "Create kubelet.service.d directory"
   file: path=/etc/systemd/system/kubelet.service.d/ state=directory owner=root group=root mode=0755
 
+- name: "Create custom directory in /etc/kubernetes"
+  file: path=/etc/kubernetes/custom/ state=directory mode=0755
+
 - name: "Copy files related to kubernetes"
   copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
   with_items:
@@ -11,6 +14,7 @@
     - { src: 'files/etc/sysctl.d/k8s.conf', dest: '/etc/sysctl.d/k8s.conf' }
     - { src: 'files/etc/yum.repos.d/kubernetes.repo', dest: '/etc/yum.repos.d/kubernetes.repo' }
     - { src: 'files/etc/systemd/system/kubelet.service.d/10-kubeadm.conf', dest: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf' }
+    - { src: 'files/var/lib/kubelet/config.yaml', dest: '/etc/kubernetes/custom/kubelet.config.yaml' }
 
 - name: "Disable swap"
   command: swapoff -a
