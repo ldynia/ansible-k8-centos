@@ -1,0 +1,62 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.driver = "kvm"
+    libvirt.host = 'localhost'
+    # 'qemu:///session' to run as user, but then virbr0 is not available
+    libvirt.uri = 'qemu:///system'
+    libvirt.management_network_device = 'virbr0'
+    libvirt.storage_pool_name = "default"
+  end
+
+  config.ssh.insert_key = false
+  config.ssh.private_key_path  = "config/ssh/insecure_private_key"
+
+  config.vm.box = 'centos/7'
+
+  config.vm.provision "file", source: "config/etc/hosts",       destination: "config/etc/hosts"
+  config.vm.provision "file", source: "config/etc/resolv.conf", destination: "config/etc/resolv.conf"
+  config.vm.provision "file", source: "scripts/files.sh",       destination: "scripts/files.sh"
+  config.vm.provision :shell, path: 'scripts/files.sh'
+
+  config.vm.define "master" do |m|
+     m.vm.hostname = "master"
+     m.vm.provider :libvirt do |libvirt|
+       libvirt.memory = 2048
+       libvirt.cpus = 2
+     end
+     m.vm.network :private_network, :ip => '192.168.122.230', :libvirt__forward_mode => 'none', :libvirt__network_name => 'default'
+  end
+
+  config.vm.define "web01" do |m|
+     m.vm.hostname = "web01"
+     m.vm.provider :libvirt do |libvirt|
+       libvirt.memory = 1024
+       libvirt.cpus = 2
+     end
+     m.vm.network :private_network, :ip => '192.168.122.231'
+  end
+
+  config.vm.define "compute01" do |m|
+     m.vm.hostname = "compute01"
+     m.vm.provider :libvirt do |libvirt|
+       libvirt.memory = 1024
+       libvirt.cpus = 2
+     end
+     m.vm.network :private_network, :ip => '192.168.122.232'
+  end
+
+#  config.vm.define "compute02" do |m|
+#     m.vm.hostname = "compute02"
+#     m.vm.provider :libvirt do |libvirt|
+#       libvirt.memory = 1024
+#       libvirt.cpus = 2
+#     end
+#     m.vm.network :private_network, :ip => '192.168.122.233'
+#  end
+
+end
+

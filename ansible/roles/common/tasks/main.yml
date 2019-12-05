@@ -4,7 +4,6 @@
     - { src: 'files/.bashrc', dest: '~/.bashrc' }
     - { src: 'files/.bashrc', dest: '~/.bashrc' }
     - { src: 'files/etc/yum.conf', dest: '/etc/yum.conf' }
-    - { src: 'files/etc/resolv.conf', dest: '/etc/resolv.conf' }
     - { src: 'files/.bash_aliases', dest: '/etc/profile.d/00-aliases.sh' }
 
 - name: Enable EPEL Repository

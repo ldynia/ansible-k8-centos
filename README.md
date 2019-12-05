@@ -4,7 +4,7 @@ This repo contains provisioning for phenex servers operated by Ansible.
 
 * Install [Ansible](https://www.ansible.com/)
 * Install [VirtualBox](https://www.virtualbox.org/)
-* Install [Vagrant](https://www.vagrantup.com/)
+* Install [Vagrant](https://www.vagrantup.com/) and vagrant-sshfs plugin
 * Copy your local ssh key (**id_rsa.pub**) into vagrant servers
 * Request sudo privileges on vagrant machines
 
@@ -20,13 +20,6 @@ $ vagrant up
 $ vagrant status
 $ vagrant ssh-config
 $ vagrant ssh-config master
-Host master
-  IdentityFile /home/ludd/.vagrant.d/insecure_private_key
-
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.230
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.231
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.232
-$ ssh -i /home/ludd/.vagrant.d/insecure_private_key vagrant@192.168.234.233
 
 $ vagrant ssh master
 $ vagrant halt
@@ -51,6 +44,16 @@ $ ansible-playbook -K -s -u vagrant playbook.yml
 $ ansible-playbook --ask-sudo-pass --user=vagrant playbook.yml
 ```
 
+## Accessing the Vagrant machines
+
+```bash
+alias sshinsec="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+sshinsec -i vagrant/config/ssh/insecure_private_key vagrant@192.168.234.230
+sshinsec -i vagrant/config/ssh/insecure_private_key vagrant@192.168.234.231
+sshinsec -i vagrant/config/ssh/insecure_private_key vagrant@192.168.234.232
+sshinsec -i vagrant/config/ssh/insecure_private_key vagrant@192.168.234.233
+```
 
 ## Verify - Kubernetes Cluster
 
