@@ -12,6 +12,6 @@ ff02::3	ip6-allhosts
 
 # Cluster nodes
 192.168.234.230 master
-192.168.234.231 web01
-192.168.234.232 compute01
-192.168.234.233 compute02
+192.168.234.231 worker1
+192.168.234.232 worker2
+192.168.234.233 worker3

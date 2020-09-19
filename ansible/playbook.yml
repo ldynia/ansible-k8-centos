@@ -1,26 +1,26 @@
 ---
-- hosts: all
-  become: true
-  roles:
-    - common
-    - docker
+# - hosts: all
+#   become: true
+#   roles:
+#     - common
+#     - docker
 
-- hosts: master
-  become: true
-  roles:
-    - nfs-master
+# - hosts: master
+#   become: true
+#   roles:
+#     - nfs-master
 
-- hosts: slave
-  become: true
-  roles:
-    - nfs-slave
+# - hosts: slave
+#   become: true
+#   roles:
+#     - nfs-slave
 
-- hosts: kubernetes-master
-  become: true
-  roles:
-    - kubernetes-master
-    - kubernetes-helm
-    - kubernetes-traefik
+# - hosts: kubernetes-master
+#   become: true
+#   roles:
+#     - kubernetes-master
+#     - kubernetes-helm
+#     - kubernetes-traefik
 
 - hosts: kubernetes-worker
   become: true
