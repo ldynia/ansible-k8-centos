@@ -19,10 +19,15 @@
   become: true
   roles:
     - kubernetes-master
-    - kubernetes-helm
     - kubernetes-traefik
+    # - kubernetes-helm
 
 - hosts: kubernetes-worker
   become: true
   roles:
     - kubernetes-worker
+
+- hosts: kubernetes-client
+  become: true
+  roles:
+    - kubernetes-client

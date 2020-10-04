@@ -11,6 +11,7 @@ ff02::3	ip6-allhosts
 127.0.0.1 localhost
 
 # Cluster nodes
+192.168.234.200 k8client
 192.168.234.230 master
 192.168.234.231 worker1
 192.168.234.232 worker2
