@@ -3,17 +3,21 @@
   become: true
   roles:
     - common
-    - docker
 
-- hosts: master
+- hosts: nfs-master
   become: true
   roles:
     - nfs-master
 
-- hosts: slave
+- hosts: nfs-slave
   become: true
   roles:
     - nfs-slave
+
+- hosts: kubernetes-all
+  become: true
+  roles:
+    - docker
 
 - hosts: kubernetes-master
   become: true
