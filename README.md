@@ -11,7 +11,7 @@ This repo contains provisioning for phenex servers operated by Ansible.
 ## Production - Live Set Up
 
 * Install [Ansible](https://www.ansible.com/)
-* Generate tls keys `ssh-keygen -t rsa -N ''` and copy local (**id_rsa.pub**) into vagrant servers -you can use `ssh-copy-id`
+* Generate tls keys `ssh-keygen -t rsa -b 4096 -N ''` and copy local (**id_rsa.pub**) into vagrant servers -you can use `ssh-copy-id`
 
 ## Vagrant
 
