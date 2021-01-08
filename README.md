@@ -4,7 +4,9 @@ This repo contains provisioning for phenex servers operated by Ansible.
 
 * Install [Ansible](https://www.ansible.com/)
 * Install [VirtualBox](https://www.virtualbox.org/)
+    * `export VAGRANT_I_KNOW_WHAT_IM_DOING_PLEASE_BE_QUIET=1`
 * Install [Vagrant](https://www.vagrantup.com/)
+
 * Copy your local ssh key (**id_rsa.pub**) into vagrant servers
 * Request sudo privileges on vagrant machines
 
