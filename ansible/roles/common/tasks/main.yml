@@ -10,11 +10,12 @@
 - name: Enable EPEL Repository
   yum: pkg=epel-release state=installed
 
-- name: Upgrade all packages, beside excluded ones
-  yum:
-    name: '*'
-    state: latest
-    exclude: kernel*, docker*, kubernetes*
+# TODO: Comment in if you need latest packages
+# - name: Upgrade all packages, beside excluded ones
+#   yum:
+#     name: '*'
+#     state: latest
+#     exclude: kernel*, docker*, kubernetes*
 
 - name: Install Packages
   yum: pkg={{ item.packages }} state=installed

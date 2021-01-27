@@ -1,2 +1,2 @@
-/nfs/www      web*(rw,no_root_squash,sync) compute*(rw,no_root_squash,sync)
-/nfs/data     web*(rw,no_root_squash,sync) compute*(rw,no_root_squash,sync)
+/nfs/www      worker*(rw,no_root_squash,sync)
+/nfs/data     worker*(rw,no_root_squash,sync)

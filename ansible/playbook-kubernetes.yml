@@ -1,0 +1,17 @@
+---
+- hosts: kubernetes-master
+  become: true
+  roles:
+    - kubernetes-master
+    - kubernetes-traefik
+    - kubernetes-helm
+
+- hosts: kubernetes-worker
+  become: true
+  roles:
+    - kubernetes-worker
+
+# - hosts: kubernetes-client
+#   become: true
+#   roles:
+#     - kubernetes-client

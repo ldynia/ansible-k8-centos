@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - common
+
+- hosts: nfs-master
+  become: true
+  roles:
+    - nfs-master
+
+- hosts: nfs-slave
+  become: true
+  roles:
+    - nfs-slave
+
+- hosts: kubernetes-all
+  become: true
+  roles:
+    - docker
