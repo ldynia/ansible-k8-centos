@@ -3,14 +3,14 @@
     path: /tmp/downloads
     state: directory
 
-- name: Download helm-v{{ helm_version }}-linux-amd64.tar.gz
+- name: Download helm-{{ helm_version }}-linux-amd64.tar.gz
   get_url:
-      url: https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz
-      dest: /tmp/downloads/helm-v{{ helm_version }}-linux-amd64.tar.gz
+      url: https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz
+      dest: /tmp/downloads/helm-{{ helm_version }}-linux-amd64.tar.gz
 
-- name: Extrack helm-v{{ helm_version }}-linux-amd64.tar.gz
+- name: Extract helm-{{ helm_version }}-linux-amd64.tar.gz
   unarchive:
-    src: /tmp/downloads/helm-v{{ helm_version }}-linux-amd64.tar.gz
+    src: /tmp/downloads/helm-{{ helm_version }}-linux-amd64.tar.gz
     dest: /tmp/downloads
     remote_src: yes
 
@@ -25,6 +25,3 @@
   file:
     path: /tmp/downloads
     state: absent
-
-- name: Initialize Helm
-  command: /usr/local/bin/helm init

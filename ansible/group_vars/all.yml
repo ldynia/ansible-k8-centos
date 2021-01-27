@@ -15,4 +15,4 @@ kubernetes_cni_version: 0.7.5-0
 kubernetes_token: rejx4p.xluudiw20opeslsi
 kubernetes_network_cni: wavenet
 kubernetes_pod_network_cidr: 10.244.0.0/16
-helm_version: 2.13.0
+helm_version: v3.5.0
