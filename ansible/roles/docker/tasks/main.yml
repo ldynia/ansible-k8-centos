@@ -80,7 +80,7 @@
   when: deployment == "development"
 
 - name: "Restart Firewall Service"
-  service:
+  systemd:
     name: firewalld
     state: reloaded
     enabled: yes
@@ -93,7 +93,7 @@
     masked: no
 
 - name: "Start Docker Service"
-  service:
+  systemd:
     name: docker
     state: started
     enabled: yes

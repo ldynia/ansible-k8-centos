@@ -62,7 +62,7 @@
     - { port: 10250, type: tcp }
 
 - name: "Restart Firewall Service"
-  service:
+  systemd:
     name: firewalld
     state: reloaded
     enabled: yes

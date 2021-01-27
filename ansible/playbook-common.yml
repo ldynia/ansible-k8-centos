@@ -14,7 +14,7 @@
   roles:
     - nfs-slave
 
-- hosts: kubernetes-all
+- hosts: kubernetes-cluster
   become: true
   roles:
     - docker

@@ -58,7 +58,7 @@
     - { port: 10252, type: tcp }
 
 - name: "Reload Firewall Service"
-  service:
+  systemd:
     name: firewalld
     state: reloaded
     enabled: yes

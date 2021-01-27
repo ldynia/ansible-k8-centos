@@ -22,7 +22,7 @@
     - rpcbind
     - nfs-server
 
-- name: Enable and start 'firewalld' service
+- name: Enable and start firewalld service
   systemd:
     name: firewalld
     state: started
