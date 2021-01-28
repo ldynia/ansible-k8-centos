@@ -1,0 +1,24 @@
+# Link: https://github.com/schoolofdevops/ultimate-kubernetes-bootcamp/blob/master/chapters/ingress.md
+# Link: https://github.com/kubernetes-sigs/metrics-server
+# Link: https://doc.traefik.io/traefik/
+# Link: https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal
+
+- name: Copy metrics-server file
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
+  with_items:
+    - { src: 'files/metrics-server.yaml', dest: '/tmp/metrics-server.yaml' }
+    - { src: 'files/traefik-rbac.yaml', dest: '/tmp/traefik-rbac.yaml' }
+    - { src: 'files/traefik-ds.yaml', dest: '/tmp/traefik-ds.yaml' }
+    - { src: 'files/nginx-ingress.yaml', dest: '/tmp/nginx-ingress.yaml' }
+
+- name: Create metrics-server.
+  shell: kubectl apply -f /tmp/metrics-server.yaml
+
+- name: Install nginx Ingres
+  shell: kubectl apply -f /tmp/nginx-ingress.yaml
+
+- name: Install traefik Ingres - RBAC traefik-rbac.yaml
+  shell: kubectl apply -f /tmp/traefik-rbac.yaml
+
+- name: Install traefik Ingres - DaemonSet traefik-ds.yaml
+  shell: kubectl apply -f /tmp/traefik-ds.yaml

@@ -1,8 +1,0 @@
-# Link: https://github.com/schoolofdevops/ultimate-kubernetes-bootcamp/blob/master/chapters/ingress.md
-# Link: https://docs.traefik.io/user-guide/kubernetes/#role-based-access-control-configuration-kubernetes-16-only
-
-- name: Install RBAC traefik-rbac.yaml
-  shell: kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-rbac.yaml
-
-- name: Install DaemonSet traefik-ds.yaml
-  shell: kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-ds.yaml

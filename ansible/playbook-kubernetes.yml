@@ -3,7 +3,7 @@
   become: true
   roles:
     - kubernetes-master
-    - kubernetes-traefik
+    - kubernetes-plugins
     - kubernetes-helm
 
 - hosts: kubernetes-worker
